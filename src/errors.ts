@@ -1,3 +1,4 @@
+import { EquiVaultApiError } from "./client.js";
 import type { EquiVaultErrorResponse } from "./types.js";
 
 function capitalize(s: string): string {
@@ -45,4 +46,20 @@ export function translateError(
   }
 
   return "EquiVault API error. Try again in a moment.";
+}
+
+export function handleError(err: unknown): {
+  content: [{ type: "text"; text: string }];
+  isError: true;
+} {
+  if (err instanceof EquiVaultApiError) {
+    return {
+      content: [{ type: "text" as const, text: translateError(err.status, err.body) }],
+      isError: true as const,
+    };
+  }
+  return {
+    content: [{ type: "text" as const, text: `Unexpected error: ${String(err)}` }],
+    isError: true as const,
+  };
 }
