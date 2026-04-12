@@ -1,0 +1,46 @@
+{
+  "name": "equivault-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for EquiVault — AI-powered equity research tools for Claude",
+  "type": "module",
+  "bin": {
+    "equivault-mcp": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod 755 build/index.js",
+    "start": "node build/index.js",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/ tests/",
+    "typecheck": "tsc --noEmit"
+  },
+  "files": [
+    "build"
+  ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "equivault",
+    "financial-data",
+    "equity-research",
+    "claude",
+    "ai"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
+    "@eslint/js": "^9.0.0",
+    "typescript-eslint": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^3.0.0"
+  }
+}
