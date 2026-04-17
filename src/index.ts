@@ -7,6 +7,10 @@ import { registerFinancialTools } from "./tools/financials.js";
 import { registerMarketTools } from "./tools/market.js";
 import { registerScreeningTools } from "./tools/screening.js";
 import { registerBillingTools } from "./tools/billing.js";
+import { registerNarrativeTools } from "./tools/narrative.js";
+import { registerProfileTools } from "./tools/profiles.js";
+import { registerStrategyTools } from "./tools/strategy.js";
+import { registerCompositeTools } from "./tools/composite.js";
 
 const apiKey = process.env.EQUIVAULT_API_KEY;
 const tenantId = process.env.EQUIVAULT_TENANT_ID;
@@ -30,6 +34,10 @@ registerFinancialTools(server, client);
 registerMarketTools(server, client);
 registerScreeningTools(server, client);
 registerBillingTools(server, client);
+registerNarrativeTools(server, client);
+registerProfileTools(server, client);
+registerStrategyTools(server, client);
+registerCompositeTools(server, client);
 
 const transport = new StdioServerTransport();
 await server.connect(transport);
