@@ -27,7 +27,7 @@ if (!tenantId) {
 }
 
 const client = new EquiVaultClient({ apiKey, tenantId, baseUrl });
-const server = new McpServer({ name: "equivault", version: "0.1.0" });
+const server = new McpServer({ name: "equivault", version: "0.2.0" });
 
 registerCompanyTools(server, client);
 registerFinancialTools(server, client);
