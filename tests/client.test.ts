@@ -197,6 +197,63 @@ describe("EquiVaultClient", () => {
     });
   });
 
+  describe("put()", () => {
+    it("sends PUT request with correct headers and body", async () => {
+      const fetchMock = vi.fn().mockResolvedValue(makeResponse({ id: "alert-1", updated: true }));
+      vi.stubGlobal("fetch", fetchMock);
+
+      const result = await client.put("/signals/alerts/alert-1", { threshold: 10 });
+
+      const [url, init] = fetchMock.mock.calls[0];
+      expect(url).toBe("https://api.equivault.test/signals/alerts/alert-1");
+      expect(init.method).toBe("PUT");
+      expect(JSON.parse(init.body)).toEqual({ threshold: 10 });
+      expect(init.headers["Authorization"]).toBe("Bearer test-api-key");
+      expect(result).toEqual({ id: "alert-1", updated: true });
+    });
+
+    it("throws EquiVaultApiError on non-ok PUT response", async () => {
+      const errorBody = { error: { code: "NOT_FOUND", message: "Not found", status: 404 } };
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue(makeResponse(errorBody, 404)));
+
+      await expect(client.put("/signals/alerts/bad", {})).rejects.toThrow(EquiVaultApiError);
+    });
+  });
+
+  describe("delete()", () => {
+    it("sends DELETE request with correct headers and no body", async () => {
+      const fetchMock = vi.fn().mockResolvedValue(makeResponse({}, 204));
+      vi.stubGlobal("fetch", fetchMock);
+
+      await client.delete("/signals/alerts/alert-1");
+
+      const [url, init] = fetchMock.mock.calls[0];
+      expect(url).toBe("https://api.equivault.test/signals/alerts/alert-1");
+      expect(init.method).toBe("DELETE");
+      expect(init.body).toBeUndefined();
+      expect(init.headers["Authorization"]).toBe("Bearer test-api-key");
+    });
+
+    it("returns empty object when response body is empty (204)", async () => {
+      const emptyResponse = {
+        ok: true,
+        status: 204,
+        json: vi.fn().mockRejectedValue(new Error("no body")),
+      } as unknown as Response;
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue(emptyResponse));
+
+      const result = await client.delete("/signals/alerts/alert-1");
+      expect(result).toEqual({});
+    });
+
+    it("throws EquiVaultApiError on non-ok DELETE response", async () => {
+      const errorBody = { error: { code: "NOT_FOUND", message: "Not found", status: 404 } };
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue(makeResponse(errorBody, 404)));
+
+      await expect(client.delete("/signals/alerts/bad")).rejects.toThrow(EquiVaultApiError);
+    });
+  });
+
   describe("EquiVaultApiError", () => {
     it("is an instance of Error", () => {
       const err = new EquiVaultApiError(404, null);

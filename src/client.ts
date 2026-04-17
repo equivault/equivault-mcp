@@ -75,4 +75,39 @@ export class EquiVaultClient {
     });
     return this.handleResponse<T>(response);
   }
+
+  async put<T = unknown>(path: string, data: unknown): Promise<T> {
+    const url = this.buildUrl(path);
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: this.headers,
+      body: JSON.stringify(data),
+    });
+    return this.handleResponse<T>(response);
+  }
+
+  async delete<T = unknown>(path: string): Promise<T> {
+    const url = this.buildUrl(path);
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: this.headers,
+    });
+
+    if (!response.ok) {
+      let body: EquiVaultErrorResponse | null = null;
+      try {
+        body = (await response.json()) as EquiVaultErrorResponse;
+      } catch {
+        // body stays null
+      }
+      throw new EquiVaultApiError(response.status, body);
+    }
+
+    // DELETE responses often have no body (204 No Content)
+    try {
+      return (await response.json()) as T;
+    } catch {
+      return {} as T;
+    }
+  }
 }
