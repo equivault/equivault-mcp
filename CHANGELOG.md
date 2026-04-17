@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] — 2026-04-17 · Launch
+
+First stable release. Feature set is considered complete for v1.x and will follow semver going forward.
+
+### Added
+
+- **`CHANGELOG.md`** — release history in Keep-a-Changelog format (v0.1.0 → v1.0.0).
+- **`CONTRIBUTING.md`** — project layout, conventions, tool-adding workflow, release process.
+- **`EXAMPLES.md`** — realistic Claude prompts for every tool category.
+- **README** — links to the three new docs from the Development section.
+
+### Changed
+
+- Tool count frozen at **38** for the v1.x line (8 core + 12 profile + 4 composite + 8 signals/alerts + 6 briefs-media-gurus-markets).
+
 ## [0.3.0] — 2026-04-17 · EquiVault Complete
 
 Full EquiVault capability coverage — signals, alerts, briefs, portfolios, media, gurus, markets.
@@ -53,7 +68,8 @@ Initial public release. Core equity research tools for Claude.
 - **CI/CD:** GitHub Actions for typecheck + test + build on Node 18, 20, 22; tag-triggered npm publish workflow (requires `NPM_TOKEN` secret).
 - **Brand:** Official EquiVault identity — indigo `#4F46E5` + amber `#FBBF24` ascending-chart mark, Space Grotesk wordmark, dark-mode social preview banner.
 
-[Unreleased]: https://github.com/equivault/equivault-mcp/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/equivault/equivault-mcp/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/equivault/equivault-mcp/compare/v0.3.0...v1.0.0
 [0.3.0]: https://github.com/equivault/equivault-mcp/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/equivault/equivault-mcp/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/equivault/equivault-mcp/releases/tag/v0.1.0
