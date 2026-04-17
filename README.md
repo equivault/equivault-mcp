@@ -58,16 +58,42 @@ export EQUIVAULT_TENANT_ID=your-tenant-id
 
 ## Tools
 
+### Core Research (M1)
+
 | Tool | Description |
-|---|---|
-| `search_companies` | Search for companies by name, ticker, or keyword |
-| `get_company` | Get detailed information about a specific company |
-| `get_financials` | Get financial statements (income statement, balance sheet, cash flow) |
-| `get_metrics` | Get financial KPIs and metrics for a company over time |
-| `get_stock_quote` | Get real-time stock quotes for one or more tickers |
-| `screen_companies` | Screen companies using financial filters (sector, market cap, ratios, etc.) |
-| `compare_companies` | Compare financial metrics across multiple companies side by side |
-| `get_billing_status` | Check your current tier, query usage, and account limits |
+|------|-------------|
+| `search_companies` | Search companies by name, ticker, or keyword |
+| `get_company` | Get detailed company profile |
+| `get_financials` | Financial statements (income, balance sheet, cash flow) |
+| `get_metrics` | Financial ratios and metrics time-series |
+| `get_stock_quote` | Current stock price, change, and volume |
+| `screen_companies` | Filter companies by financial criteria |
+| `compare_companies` | Side-by-side peer comparison |
+| `get_billing_status` | Check subscription tier and API usage |
+
+### Company Deep Data (M2)
+
+| Tool | Description | Tier |
+|------|-------------|------|
+| `get_company_narrative` | Investment thesis, drivers, headwinds, tailwinds | Starter+ |
+| `get_guidance` | Management guidance tracker with beat/miss outcomes | Professional+ |
+| `get_segments` | Revenue and operating-income by business segment | Professional+ |
+| `get_capital_allocation` | Buybacks, dividends, debt, M&A, capex history | Professional+ |
+| `get_risk_factors` | Risk-factor evolution from filings | Professional+ |
+| `get_insider_transactions` | Insider buys, sells, 10b5-1 flag | Advisor+ |
+| `get_earnings_quality` | Accruals, cash conversion, non-GAAP flags | Professional+ |
+| `get_debt_maturities` | Debt maturity schedule | Professional+ |
+| `get_competitive_signals` | Market share, new entrants, pricing signals | Professional+ |
+| `get_management_statements` | Notable management statements with sentiment | Advisor+ |
+| `get_accounting_snapshots` | Accounting policies and period-over-period changes | Professional+ |
+| `get_strategy_profiles` | Available investment strategy profiles | All |
+
+### Composite (M2)
+
+| Tool | Description |
+|------|-------------|
+| `analyze_company` | One-shot: profile + financials + metrics + narrative |
+| `company_deep_dive` | Everything in `analyze_company` + all 10 profile sections |
 
 ## Examples
 
