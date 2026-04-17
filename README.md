@@ -1,6 +1,18 @@
-# equivault-mcp
+<p align="center">
+  <img src="brand/social-preview.png" alt="equivault-mcp — AI-powered equity research for Claude" width="100%"/>
+</p>
 
-MCP server for EquiVault — AI-powered equity research tools for Claude.
+<h1 align="center">equivault-mcp</h1>
+
+<p align="center">
+  MCP server for <a href="https://equivault.ai">EquiVault</a> — AI-powered equity research tools for Claude.
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/equivault-mcp"><img src="https://img.shields.io/npm/v/equivault-mcp?color=F59E0B&labelColor=0F172A" alt="npm"/></a>
+  <a href="https://github.com/equivault/equivault-mcp/actions"><img src="https://img.shields.io/github/actions/workflow/status/equivault/equivault-mcp/ci.yml?branch=main&labelColor=0F172A" alt="CI"/></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-8B5CF6?labelColor=0F172A" alt="license"/></a>
+</p>
 
 ## Quick Start
 

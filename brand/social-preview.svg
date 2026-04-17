@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" fill="none">
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="55%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="hexStroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1220"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <radialGradient id="leftGlow" cx="0.25" cy="0.5" r="0.55">
+      <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="#8B5CF6" stop-opacity="0.09"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rightGlow" cx="0.85" cy="0.5" r="0.45">
+      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.28"/>
+      <stop offset="70%" stop-color="#0F172A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="textGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#A78BFA"/>
+    </linearGradient>
+
+    <style>
+      .brand-title {
+        font-family: 'IBM Plex Sans', 'SF Pro Display', 'Inter', system-ui, sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+      }
+      .brand-subtitle {
+        font-family: 'IBM Plex Sans', system-ui, sans-serif;
+        font-weight: 400;
+      }
+      .brand-mono {
+        font-family: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
+        font-weight: 500;
+      }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="640" fill="url(#bgGrad)"/>
+
+  <!-- Ambient glows -->
+  <rect width="1280" height="640" fill="url(#leftGlow)"/>
+  <rect width="1280" height="640" fill="url(#rightGlow)"/>
+
+  <!-- Subtle grid texture -->
+  <g stroke="#F8FAFC" stroke-opacity="0.02" stroke-width="1">
+    <path d="M0 80 H1280 M0 160 H1280 M0 240 H1280 M0 320 H1280 M0 400 H1280 M0 480 H1280 M0 560 H1280"/>
+    <path d="M80 0 V640 M160 0 V640 M240 0 V640 M320 0 V640 M400 0 V640 M480 0 V640 M560 0 V640 M640 0 V640 M720 0 V640 M800 0 V640 M880 0 V640 M960 0 V640 M1040 0 V640 M1120 0 V640 M1200 0 V640"/>
+  </g>
+
+  <!-- Left side: Logo mark -->
+  <g transform="translate(130 196)">
+    <!-- Glow halo -->
+    <circle cx="128" cy="128" r="160" fill="#F59E0B" fill-opacity="0.05"/>
+
+    <!-- Hexagon -->
+    <path d="M128 28 L216 80 L216 176 L128 228 L40 176 L40 80 Z"
+          stroke="url(#hexStroke)" stroke-width="5" stroke-linejoin="round"
+          fill="#0F172A" fill-opacity="0.55"/>
+    <path d="M128 48 L198 89 L198 167 L128 208 L58 167 L58 89 Z"
+          stroke="#F8FAFC" stroke-opacity="0.08" stroke-width="1" fill="none"/>
+
+    <!-- E bars -->
+    <rect x="80" y="84" width="68" height="14" rx="3" fill="url(#brand)"/>
+    <rect x="80" y="121" width="54" height="14" rx="3" fill="url(#brand)"/>
+    <rect x="80" y="158" width="96" height="14" rx="3" fill="url(#brand)"/>
+    <rect x="80" y="84" width="14" height="88" rx="3" fill="url(#brand)"/>
+
+    <!-- Trend dot -->
+    <circle cx="186" cy="91" r="7" fill="#FBBF24"/>
+    <circle cx="186" cy="91" r="7" fill="none" stroke="#F8FAFC" stroke-opacity="0.45" stroke-width="1"/>
+  </g>
+
+  <!-- Right side: Text block -->
+  <g transform="translate(520 220)">
+    <!-- MCP badge / tag -->
+    <g>
+      <rect x="0" y="0" width="168" height="32" rx="16" fill="#F59E0B" fill-opacity="0.08" stroke="#F59E0B" stroke-opacity="0.35" stroke-width="1"/>
+      <circle cx="18" cy="16" r="4" fill="#FBBF24"/>
+      <text x="32" y="21" class="brand-mono" font-size="13" fill="#FBBF24" letter-spacing="0.05em">MCP · PUBLIC PREVIEW</text>
+    </g>
+
+    <!-- Title -->
+    <text x="0" y="100" class="brand-title" font-size="72" fill="url(#textGrad)">equivault-mcp</text>
+
+    <!-- Subtitle -->
+    <text x="0" y="150" class="brand-subtitle" font-size="24" fill="#CBD5E1" letter-spacing="-0.01em">
+      AI-powered equity research for Claude —
+    </text>
+    <text x="0" y="184" class="brand-subtitle" font-size="24" fill="#CBD5E1" letter-spacing="-0.01em">
+      company data, financials, screening &amp; more.
+    </text>
+
+    <!-- Feature strip -->
+    <g transform="translate(0 240)">
+      <text x="0" y="0" class="brand-mono" font-size="14" fill="#94A3B8" letter-spacing="0.08em">8 TOOLS · TYPESCRIPT · MIT</text>
+      <line x1="0" y1="14" x2="360" y2="14" stroke="url(#accentGrad)" stroke-width="2" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- Bottom-right corner mark -->
+  <g transform="translate(1120 570)">
+    <text x="0" y="0" class="brand-mono" font-size="12" fill="#64748B" letter-spacing="0.1em" text-anchor="end">github.com/equivault</text>
+  </g>
+
+  <!-- Subtle top accent line -->
+  <line x1="0" y1="0" x2="1280" y2="0" stroke="url(#accentGrad)" stroke-width="3" stroke-opacity="0.6"/>
+</svg>
