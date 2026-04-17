@@ -125,4 +125,117 @@ export function registerCompositeTools(
       }
     }
   );
+
+  // ------------------------------------------------------------------
+  // morning_briefing
+  // ------------------------------------------------------------------
+  server.tool(
+    "morning_briefing",
+    "Get a daily research summary: signal dashboard, trending signals, recent briefs for followed companies, and optionally portfolio analytics. Sections your tier can't access are marked unavailable.",
+    {
+      portfolio_id: z
+        .string()
+        .optional()
+        .describe("Optional portfolio ID — if provided, portfolio analytics are included"),
+    },
+    async ({ portfolio_id }) => {
+      try {
+        const promises: Array<Promise<unknown>> = [
+          resolveOrGate(client.get("/signals/dashboard")),
+          resolveOrGate(client.get("/signals/trending")),
+          resolveOrGate(client.get("/briefs", { followed: "true" })),
+        ];
+        if (portfolio_id) {
+          promises.push(
+            resolveOrGate(client.get(`/portfolios/${portfolio_id}/analytics`))
+          );
+        }
+
+        const results = await Promise.all(promises);
+        const [signal_dashboard, trending_signals, recent_briefs] = results;
+        const output: Record<string, unknown> = {
+          signal_dashboard,
+          trending_signals,
+          recent_briefs,
+        };
+        if (portfolio_id) {
+          output.portfolio_analytics = results[3];
+        }
+
+        return {
+          content: [{ type: "text" as const, text: JSON.stringify(output, null, 2) }],
+        };
+      } catch (err) {
+        return handleError(err);
+      }
+    }
+  );
+
+  // ------------------------------------------------------------------
+  // research_report
+  // ------------------------------------------------------------------
+  server.tool(
+    "research_report",
+    "Build a comprehensive research report for a company: full deep-dive (profile, financials, metrics, narrative, all 10 profile sections), recent signals, and related briefs — all in one call, ready for rendering as a report.",
+    {
+      company_id: z.string().describe("Company ID from search_companies"),
+    },
+    async ({ company_id }) => {
+      try {
+        const profileSections = [
+          "guidance",
+          "segments",
+          "capital-allocation",
+          "risk-factors",
+          "insider-transactions",
+          "earnings-quality",
+          "debt-maturities",
+          "competitive-signals",
+          "management-statements",
+          "accounting-snapshots",
+        ] as const;
+
+        const [
+          company,
+          financials,
+          metrics,
+          narrative,
+          recent_signals,
+          briefs,
+          ...profileResults
+        ] = await Promise.all([
+          resolveOrGate(client.get(`/companies/${company_id}`)),
+          resolveOrGate(client.get(`/companies/${company_id}/financials`)),
+          resolveOrGate(client.get(`/companies/${company_id}/metrics`)),
+          resolveOrGate(client.get(`/companies/${company_id}/narrative`)),
+          resolveOrGate(client.get(`/signals/companies/${company_id}`, { limit: "10" })),
+          resolveOrGate(client.get("/briefs", { company_id })),
+          ...profileSections.map((s) =>
+            resolveOrGate(client.get(`/companies/${company_id}/profile/${s}`))
+          ),
+        ]);
+
+        const profile: Record<string, unknown> = {};
+        profileSections.forEach((section, i) => {
+          const key = section.replace(/-/g, "_");
+          profile[key] = profileResults[i];
+        });
+
+        return {
+          content: [
+            {
+              type: "text" as const,
+              text: JSON.stringify(
+                { company, financials, metrics, narrative, recent_signals, briefs, profile },
+                null,
+                2
+              ),
+            },
+          ],
+        };
+      } catch (err) {
+        return handleError(err);
+      }
+    }
+  );
 }
