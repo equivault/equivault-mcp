@@ -112,6 +112,192 @@ export interface BillingStatus {
   overage_enabled: boolean;
 }
 
+// --- Narrative ---
+
+export interface CompanyNarrative {
+  company_id: string;
+  thesis: string;
+  drivers: string[];
+  headwinds: string[];
+  tailwinds: string[];
+  updated_at: string;
+  history?: NarrativeVersion[];
+}
+
+export interface NarrativeVersion {
+  version: number;
+  generated_at: string;
+  thesis: string;
+}
+
+// --- Guidance ---
+
+export interface GuidanceItem {
+  period: string;
+  metric: string;
+  value: number | null;
+  unit: string;
+  source: string;
+  given_at: string;
+  outcome?: "beat" | "miss" | "in_line" | "pending";
+}
+
+export interface GuidanceResponse {
+  company_id: string;
+  items: GuidanceItem[];
+}
+
+// --- Segments ---
+
+export interface SegmentBreakdown {
+  name: string;
+  revenue: number | null;
+  operating_income: number | null;
+  margin: number | null;
+  yoy_growth: number | null;
+}
+
+export interface SegmentsResponse {
+  company_id: string;
+  period: string;
+  currency: string;
+  segments: SegmentBreakdown[];
+}
+
+// --- Capital Allocation ---
+
+export interface CapitalAllocationItem {
+  period: string;
+  buybacks: number | null;
+  dividends: number | null;
+  debt_repayment: number | null;
+  acquisitions: number | null;
+  capex: number | null;
+}
+
+export interface CapitalAllocationResponse {
+  company_id: string;
+  currency: string;
+  items: CapitalAllocationItem[];
+}
+
+// --- Risk Factors ---
+
+export interface RiskFactor {
+  id: string;
+  category: string;
+  description: string;
+  first_seen: string;
+  last_updated: string;
+  status: "new" | "ongoing" | "resolved" | "elevated";
+}
+
+export interface RiskFactorsResponse {
+  company_id: string;
+  factors: RiskFactor[];
+}
+
+// --- Insider Transactions ---
+
+export interface InsiderTransaction {
+  filer: string;
+  role: string;
+  transaction_type: "buy" | "sell" | "grant" | "exercise";
+  shares: number;
+  price: number | null;
+  value: number | null;
+  filed_at: string;
+  is_10b5_1: boolean;
+}
+
+export interface InsiderTransactionsResponse {
+  company_id: string;
+  transactions: InsiderTransaction[];
+}
+
+// --- Earnings Quality ---
+
+export interface EarningsQualityResponse {
+  company_id: string;
+  period: string;
+  score: number;
+  accruals_ratio: number | null;
+  cash_conversion: number | null;
+  non_gaap_adjustments: number | null;
+  flags: string[];
+}
+
+// --- Debt Maturities ---
+
+export interface DebtMaturity {
+  year: number;
+  principal: number;
+  interest_rate: number | null;
+  instrument: string;
+}
+
+export interface DebtMaturitiesResponse {
+  company_id: string;
+  currency: string;
+  maturities: DebtMaturity[];
+}
+
+// --- Competitive Signals ---
+
+export interface CompetitiveSignal {
+  signal_type: string;
+  description: string;
+  severity: "low" | "medium" | "high";
+  detected_at: string;
+  source: string;
+}
+
+export interface CompetitiveSignalsResponse {
+  company_id: string;
+  signals: CompetitiveSignal[];
+}
+
+// --- Management Statements ---
+
+export interface ManagementStatement {
+  speaker: string;
+  role: string;
+  topic: string;
+  quote: string;
+  sentiment: "positive" | "neutral" | "negative";
+  source: string;
+  stated_at: string;
+}
+
+export interface ManagementStatementsResponse {
+  company_id: string;
+  statements: ManagementStatement[];
+}
+
+// --- Accounting Snapshots ---
+
+export interface AccountingSnapshot {
+  period: string;
+  policies: Record<string, string>;
+  changes_from_prior: string[];
+}
+
+export interface AccountingSnapshotsResponse {
+  company_id: string;
+  snapshots: AccountingSnapshot[];
+}
+
+// --- Strategy Profiles ---
+
+export interface StrategyProfile {
+  id: string;
+  name: string;
+  type: "system" | "custom";
+  description: string;
+  criteria: Record<string, unknown>;
+  created_at: string;
+}
+
 // --- Error ---
 
 export interface EquiVaultErrorResponse {
