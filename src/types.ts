@@ -298,6 +298,158 @@ export interface StrategyProfile {
   created_at: string;
 }
 
+// --- Signals ---
+
+export interface Signal {
+  id: string;
+  company_id: string;
+  signal_type: string;
+  severity: "low" | "medium" | "high";
+  sentiment: "positive" | "neutral" | "negative";
+  speaker?: string;
+  quote?: string;
+  source: string;
+  detected_at: string;
+  read: boolean;
+}
+
+export interface SignalListResponse {
+  signals: Signal[];
+  total: number;
+  page: number;
+}
+
+export interface SignalSummary {
+  company_id: string;
+  by_type: Record<string, number>;
+  by_severity: Record<string, number>;
+  unread_count: number;
+}
+
+export interface SignalDashboard {
+  portfolio_signals: Signal[];
+  unread_total: number;
+  by_company: Array<{ company_id: string; count: number; last_detected: string }>;
+}
+
+export interface SignalTrendPoint {
+  bucket: string; // ISO date or period label
+  count: number;
+  by_severity?: Record<string, number>;
+}
+
+export interface SignalTrendsResponse {
+  trends: SignalTrendPoint[];
+  window: string;
+}
+
+export interface TrendingSignal {
+  company_id: string;
+  ticker: string;
+  signal_type: string;
+  severity: "low" | "medium" | "high";
+  momentum_score: number;
+  detected_at: string;
+}
+
+// --- Alerts ---
+
+export interface AlertRule {
+  id: string;
+  name: string;
+  company_id?: string;
+  metric: string;
+  condition: "above" | "below" | "crosses_above" | "crosses_below" | "equals";
+  threshold: number;
+  enabled: boolean;
+  created_at: string;
+}
+
+export interface CreateAlertInput {
+  name: string;
+  company_id?: string;
+  metric: string;
+  condition: "above" | "below" | "crosses_above" | "crosses_below" | "equals";
+  threshold: number;
+}
+
+export interface UpdateAlertInput {
+  name?: string;
+  threshold?: number;
+  condition?: "above" | "below" | "crosses_above" | "crosses_below" | "equals";
+  enabled?: boolean;
+}
+
+// --- Briefs ---
+
+export interface BriefSummary {
+  id: string;
+  company_id: string;
+  title: string;
+  period: string;
+  generated_at: string;
+  scorecard?: Record<string, number>;
+  strategy_score?: number;
+}
+
+export interface Brief extends BriefSummary {
+  content: string;
+  sections: Array<{ heading: string; body: string }>;
+}
+
+// --- Portfolio ---
+
+export interface PortfolioAnalytics {
+  portfolio_id: string;
+  total_return: number | null;
+  sharpe_ratio: number | null;
+  sector_allocation: Record<string, number>;
+  winners: Array<{ company_id: string; return: number }>;
+  losers: Array<{ company_id: string; return: number }>;
+  updated_at: string;
+}
+
+// --- Media ---
+
+export interface MediaItem {
+  id: string;
+  company_id: string;
+  type: "earnings_call" | "podcast" | "presentation" | "investor_day" | "press_release";
+  title: string;
+  published_at: string;
+  status: "pending" | "processing" | "ready" | "failed";
+  duration_seconds?: number;
+  transcript_available: boolean;
+}
+
+export interface MediaListResponse {
+  items: MediaItem[];
+  total: number;
+  page: number;
+}
+
+// --- Gurus ---
+
+export interface GuruHolding {
+  company_id: string;
+  ticker: string;
+  shares: number;
+  value: number;
+  change_type: "new" | "increased" | "decreased" | "sold";
+  change_shares: number;
+  as_of: string;
+}
+
+// --- Markets ---
+
+export interface Market {
+  code: string;
+  name: string;
+  country: string;
+  currency: string;
+  mic: string;
+}
+
 // --- Error ---
 
 export interface EquiVaultErrorResponse {
