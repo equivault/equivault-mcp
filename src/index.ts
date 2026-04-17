@@ -11,6 +11,13 @@ import { registerNarrativeTools } from "./tools/narrative.js";
 import { registerProfileTools } from "./tools/profiles.js";
 import { registerStrategyTools } from "./tools/strategy.js";
 import { registerCompositeTools } from "./tools/composite.js";
+import { registerSignalTools } from "./tools/signals.js";
+import { registerAlertTools } from "./tools/alerts.js";
+import { registerBriefTools } from "./tools/briefs.js";
+import { registerPortfolioTools } from "./tools/portfolio.js";
+import { registerMediaTools } from "./tools/media.js";
+import { registerGuruTools } from "./tools/gurus.js";
+import { registerMarketsTools } from "./tools/markets.js";
 
 const apiKey = process.env.EQUIVAULT_API_KEY;
 const tenantId = process.env.EQUIVAULT_TENANT_ID;
@@ -38,6 +45,13 @@ registerNarrativeTools(server, client);
 registerProfileTools(server, client);
 registerStrategyTools(server, client);
 registerCompositeTools(server, client);
+registerSignalTools(server, client);
+registerAlertTools(server, client);
+registerBriefTools(server, client);
+registerPortfolioTools(server, client);
+registerMediaTools(server, client);
+registerGuruTools(server, client);
+registerMarketsTools(server, client);
 
 const transport = new StdioServerTransport();
 await server.connect(transport);
