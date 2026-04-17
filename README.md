@@ -140,11 +140,17 @@ export EQUIVAULT_TENANT_ID=your-tenant-id
 **Check account status:**
 > "How many queries do I have left this month?"
 
+## Documentation
+
+- **[EXAMPLES.md](./EXAMPLES.md)** — Real Claude prompts for every tool category
+- **[CHANGELOG.md](./CHANGELOG.md)** — Release notes per version
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** — Development workflow and conventions
+
 ## Development
 
 ```bash
 # Clone and install
-git clone https://github.com/your-org/equivault-mcp
+git clone https://github.com/equivault/equivault-mcp
 cd equivault-mcp
 npm install
 
