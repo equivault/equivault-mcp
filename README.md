@@ -95,6 +95,37 @@ export EQUIVAULT_TENANT_ID=your-tenant-id
 | `analyze_company` | One-shot: profile + financials + metrics + narrative |
 | `company_deep_dive` | Everything in `analyze_company` + all 10 profile sections |
 
+### Signals & Alerts (M3)
+
+| Tool | Description | Tier |
+|------|-------------|------|
+| `get_signals` | Paginated signals for a single company | Analyst+ |
+| `get_signal_summary` | Count breakdowns by type/severity + unread count | Analyst+ |
+| `get_signal_dashboard` | Portfolio-wide signal overview | Analyst+ |
+| `get_signal_trends` | Time-bucketed activity across portfolio | Analyst+ |
+| `get_trending_signals` | Cross-company trending signals right now | Analyst+ |
+| `create_alert` | Create an alert rule | Advisor+ |
+| `update_alert` | Update an alert rule | Advisor+ |
+| `delete_alert` | Delete an alert rule | Advisor+ |
+
+### Briefs, Portfolio & Media (M3)
+
+| Tool | Description | Tier |
+|------|-------------|------|
+| `list_briefs` | List investment briefs (filter by company or followed) | Starter+ |
+| `get_brief` | Full brief content with scorecard | Starter+ |
+| `get_portfolio_analytics` | Return, Sharpe, sector allocation, winners/losers | Analyst+ |
+| `list_media` | Earnings calls, podcasts, presentations, press releases | Starter+ |
+| `get_guru_holdings` | Prominent-investor portfolio holdings & changes | Analyst+ |
+| `get_markets` | Available markets (code, country, currency, MIC) | All |
+
+### Advanced Composite (M3)
+
+| Tool | Description |
+|------|-------------|
+| `morning_briefing` | Signal dashboard + trending + briefs + optional portfolio — in one call |
+| `research_report` | `company_deep_dive` + recent signals + related briefs, ready-to-render |
+
 ## Examples
 
 **Research a company:**
