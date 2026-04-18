@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] — 2026-04-18 · Platform Compat Infrastructure
+
+Adds machine-readable platform-version tracking and a one-time startup warning when the observed platform version drifts outside the MCP's compat range. No new tools; no behaviour change when versions align.
+
+### Added
+
+- **`equivault` block in `package.json`** — declares `platformCompatRange` (npm-style semver range) and `platformSurfaceVersion` (human-readable).
+- **`src/compat.ts`** — dependency-free semver parser + range matcher + runtime compat checker. 22 unit tests.
+- **Runtime compat check in `EquiVaultClient`** — reads `X-EquiVault-Version` header on the first response per client instance, compares to `platformCompatRange`, logs a single `console.error` warning if out of range. 6 integration tests covering success, silence, disabled, error-response, and DELETE paths.
+- **`docs/ALIGNMENT.md`** — version strategy, bump policy, alignment table, 7-day release cadence commitment.
+- **`EquiVaultClient` opt-out** — pass `platformCompatRange: null` in `ClientConfig` to disable the check (useful in tests and self-hosted setups).
+
+### Changed
+
+- `src/index.ts` reads its own `package.json` at startup and uses `pkg.version` in the MCP server handshake (single source of truth).
+
 ## [1.0.0] — 2026-04-17 · Launch
 
 First stable release. Feature set is considered complete for v1.x and will follow semver going forward.
@@ -68,7 +84,8 @@ Initial public release. Core equity research tools for Claude.
 - **CI/CD:** GitHub Actions for typecheck + test + build on Node 18, 20, 22; tag-triggered npm publish workflow (requires `NPM_TOKEN` secret).
 - **Brand:** Official EquiVault identity — indigo `#4F46E5` + amber `#FBBF24` ascending-chart mark, Space Grotesk wordmark, dark-mode social preview banner.
 
-[Unreleased]: https://github.com/equivault/equivault-mcp/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/equivault/equivault-mcp/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/equivault/equivault-mcp/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/equivault/equivault-mcp/compare/v0.3.0...v1.0.0
 [0.3.0]: https://github.com/equivault/equivault-mcp/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/equivault/equivault-mcp/compare/v0.1.0...v0.2.0

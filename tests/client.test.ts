@@ -272,4 +272,140 @@ describe("EquiVaultClient", () => {
       expect(err.body).toEqual(body);
     });
   });
+
+  describe("platformCompatRange (X-EquiVault-Version check)", () => {
+    function makeResponseWithHeaders(
+      body: unknown,
+      headers: Record<string, string>,
+      status = 200
+    ): Response {
+      return {
+        ok: status >= 200 && status < 300,
+        status,
+        json: vi.fn().mockResolvedValue(body),
+        headers: {
+          get: (name: string) => headers[name.toLowerCase()] ?? null,
+        },
+      } as unknown as Response;
+    }
+
+    let stderrSpy: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(() => {
+      stderrSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      stderrSpy.mockRestore();
+    });
+
+    it("warns once when platform version is outside compat range", async () => {
+      const fetchMock = vi
+        .fn()
+        .mockResolvedValue(
+          makeResponseWithHeaders({ ok: true }, { "x-equivault-version": "1.6.0" })
+        );
+      vi.stubGlobal("fetch", fetchMock);
+
+      const c = new EquiVaultClient({
+        ...config,
+        platformCompatRange: ">=1.3.0 <1.6.0",
+      });
+
+      await c.get("/companies");
+      await c.get("/companies");
+
+      expect(stderrSpy).toHaveBeenCalledOnce();
+      expect(stderrSpy.mock.calls[0][0]).toContain("1.6.0");
+      expect(stderrSpy.mock.calls[0][0]).toContain(">=1.3.0 <1.6.0");
+    });
+
+    it("stays silent when the platform version is in range", async () => {
+      const fetchMock = vi
+        .fn()
+        .mockResolvedValue(
+          makeResponseWithHeaders({ ok: true }, { "x-equivault-version": "1.5.2" })
+        );
+      vi.stubGlobal("fetch", fetchMock);
+
+      const c = new EquiVaultClient({
+        ...config,
+        platformCompatRange: ">=1.3.0 <1.6.0",
+      });
+
+      await c.get("/companies");
+      expect(stderrSpy).not.toHaveBeenCalled();
+    });
+
+    it("stays silent when the header is missing", async () => {
+      const fetchMock = vi
+        .fn()
+        .mockResolvedValue(makeResponseWithHeaders({ ok: true }, {}));
+      vi.stubGlobal("fetch", fetchMock);
+
+      const c = new EquiVaultClient({
+        ...config,
+        platformCompatRange: ">=1.3.0 <1.6.0",
+      });
+
+      await c.get("/companies");
+      expect(stderrSpy).not.toHaveBeenCalled();
+    });
+
+    it("skips the check when platformCompatRange is null", async () => {
+      const fetchMock = vi
+        .fn()
+        .mockResolvedValue(
+          makeResponseWithHeaders({ ok: true }, { "x-equivault-version": "9.9.9" })
+        );
+      vi.stubGlobal("fetch", fetchMock);
+
+      const c = new EquiVaultClient({
+        ...config,
+        platformCompatRange: null,
+      });
+
+      await c.get("/companies");
+      expect(stderrSpy).not.toHaveBeenCalled();
+    });
+
+    it("also checks on DELETE responses", async () => {
+      const fetchMock = vi
+        .fn()
+        .mockResolvedValue(
+          makeResponseWithHeaders({}, { "x-equivault-version": "2.0.0" })
+        );
+      vi.stubGlobal("fetch", fetchMock);
+
+      const c = new EquiVaultClient({
+        ...config,
+        platformCompatRange: ">=1.3.0 <1.6.0",
+      });
+
+      await c.delete("/signals/alerts/abc");
+      expect(stderrSpy).toHaveBeenCalledOnce();
+      expect(stderrSpy.mock.calls[0][0]).toContain("2.0.0");
+    });
+
+    it("checks even on error responses", async () => {
+      const fetchMock = vi
+        .fn()
+        .mockResolvedValue(
+          makeResponseWithHeaders(
+            { error: { code: "X", message: "m", status: 404 } },
+            { "x-equivault-version": "9.9.9" },
+            404
+          )
+        );
+      vi.stubGlobal("fetch", fetchMock);
+
+      const c = new EquiVaultClient({
+        ...config,
+        platformCompatRange: ">=1.3.0 <1.6.0",
+      });
+
+      await expect(c.get("/companies/nope")).rejects.toThrow(EquiVaultApiError);
+      expect(stderrSpy).toHaveBeenCalledOnce();
+    });
+  });
 });

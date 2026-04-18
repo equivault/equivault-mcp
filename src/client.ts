@@ -1,9 +1,18 @@
 import type { EquiVaultErrorResponse } from "./types.js";
+import { runCompatCheck } from "./compat.js";
 
 export interface ClientConfig {
   apiKey: string;
   tenantId: string;
   baseUrl: string;
+  /**
+   * npm-style semver range declaring the platform API versions this
+   * client was built against, e.g. ">=1.3.0 <1.6.0". When the API
+   * responds with an `X-EquiVault-Version` header outside this range,
+   * the client logs a single warning to stderr. Pass `null` to disable
+   * the check (useful in tests).
+   */
+  platformCompatRange?: string | null;
 }
 
 export class EquiVaultApiError extends Error {
@@ -20,9 +29,24 @@ export class EquiVaultApiError extends Error {
 
 export class EquiVaultClient {
   private readonly config: ClientConfig;
+  private compatChecked = false;
 
   constructor(config: ClientConfig) {
     this.config = config;
+  }
+
+  /**
+   * Read the platform version from a response header and run the
+   * compat check exactly once per client instance. Silent when the
+   * observed version is in range, missing, or the check is disabled.
+   */
+  private maybeCheckCompat(response: Response): void {
+    if (this.compatChecked) return;
+    const range = this.config.platformCompatRange;
+    if (range === null || range === undefined || range === "") return;
+    this.compatChecked = true;
+    const observed = response.headers.get("x-equivault-version");
+    runCompatCheck(observed, range);
   }
 
   private get headers(): Record<string, string> {
@@ -43,6 +67,10 @@ export class EquiVaultClient {
   }
 
   private async handleResponse<T>(response: Response): Promise<T> {
+    // Peek at the platform version header on every response — success
+    // or failure. Check runs at most once per client instance.
+    this.maybeCheckCompat(response);
+
     if (response.ok) {
       return response.json() as Promise<T>;
     }
@@ -92,6 +120,8 @@ export class EquiVaultClient {
       method: "DELETE",
       headers: this.headers,
     });
+
+    this.maybeCheckCompat(response);
 
     if (!response.ok) {
       let body: EquiVaultErrorResponse | null = null;

@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { EquiVaultClient } from "./client.js";
@@ -33,8 +36,40 @@ if (!tenantId) {
   process.exit(1);
 }
 
-const client = new EquiVaultClient({ apiKey, tenantId, baseUrl });
-const server = new McpServer({ name: "equivault", version: "1.0.0" });
+// Read our own package.json to surface the version + compat range
+// from a single source of truth. The file sits at ../package.json
+// relative to the compiled build/ directory.
+interface EquivaultPkgMeta {
+  version: string;
+  equivault?: {
+    platformCompatRange?: string;
+    platformSurfaceVersion?: string;
+  };
+}
+
+function readPackageMeta(): EquivaultPkgMeta {
+  const here = dirname(fileURLToPath(import.meta.url));
+  const pkgPath = join(here, "..", "package.json");
+  try {
+    const raw = readFileSync(pkgPath, "utf8");
+    return JSON.parse(raw) as EquivaultPkgMeta;
+  } catch {
+    // Fall back to minimal hardcoded metadata if the file isn't
+    // readable (e.g. custom build or unusual install layout).
+    return { version: "0.0.0" };
+  }
+}
+
+const pkg = readPackageMeta();
+const platformCompatRange = pkg.equivault?.platformCompatRange ?? null;
+
+const client = new EquiVaultClient({
+  apiKey,
+  tenantId,
+  baseUrl,
+  platformCompatRange,
+});
+const server = new McpServer({ name: "equivault", version: pkg.version });
 
 registerCompanyTools(server, client);
 registerFinancialTools(server, client);

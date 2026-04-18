@@ -143,6 +143,7 @@ export EQUIVAULT_TENANT_ID=your-tenant-id
 ## Documentation
 
 - **[EXAMPLES.md](./EXAMPLES.md)** — Real Claude prompts for every tool category
+- **[docs/ALIGNMENT.md](./docs/ALIGNMENT.md)** — How the MCP stays in sync with platform API versions
 - **[CHANGELOG.md](./CHANGELOG.md)** — Release notes per version
 - **[CONTRIBUTING.md](./CONTRIBUTING.md)** — Development workflow and conventions
 
