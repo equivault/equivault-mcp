@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] — 2026-04-18 · Publish metadata fix
+
+### Fixed
+
+- **`package.json` repository/homepage/bugs fields** — added so npm provenance signing can verify the source repo matches the tag. Without these fields, `npm publish --provenance` rejects with `422 Unprocessable Entity` even when the token is valid. No runtime behaviour change.
+
 ## [1.0.1] — 2026-04-18 · Platform Compat Infrastructure
 
 Adds machine-readable platform-version tracking and a one-time startup warning when the observed platform version drifts outside the MCP's compat range. No new tools; no behaviour change when versions align.
@@ -84,7 +90,8 @@ Initial public release. Core equity research tools for Claude.
 - **CI/CD:** GitHub Actions for typecheck + test + build on Node 18, 20, 22; tag-triggered npm publish workflow (requires `NPM_TOKEN` secret).
 - **Brand:** Official EquiVault identity — indigo `#4F46E5` + amber `#FBBF24` ascending-chart mark, Space Grotesk wordmark, dark-mode social preview banner.
 
-[Unreleased]: https://github.com/equivault/equivault-mcp/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/equivault/equivault-mcp/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/equivault/equivault-mcp/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/equivault/equivault-mcp/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/equivault/equivault-mcp/compare/v0.3.0...v1.0.0
 [0.3.0]: https://github.com/equivault/equivault-mcp/compare/v0.2.0...v0.3.0

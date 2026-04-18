@@ -1,8 +1,16 @@
 {
   "name": "equivault-mcp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "MCP server for EquiVault — AI-powered equity research tools for Claude",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/equivault/equivault-mcp.git"
+  },
+  "homepage": "https://github.com/equivault/equivault-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/equivault/equivault-mcp/issues"
+  },
   "equivault": {
     "platformCompatRange": ">=1.3.0 <1.6.0",
     "platformSurfaceVersion": "1.5.x"
